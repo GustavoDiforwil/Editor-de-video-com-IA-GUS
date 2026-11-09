@@ -26,19 +26,23 @@ try {
 
     Write-Host ""
     Write-Host " Baixando o projeto do GitHub..." -ForegroundColor Cyan
-    $tmp = Join-Path $env:TEMP ("editor_ia_" + [guid]::NewGuid().ToString('N').Substring(0, 8))
+    # baixa e extrai DENTRO da pasta escolhida (não usa a pasta temporária do Windows: com acento no nome
+    # do usuário ela vira um nome curto tipo C:\Users\USURIO~2, que o Expand-Archive do PowerShell 5.1 não aceita)
+    New-Item -ItemType Directory -Force $Destino | Out-Null
+    $tmp = Join-Path $Destino '.baixando'
+    if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force }
     New-Item -ItemType Directory -Force $tmp | Out-Null
     $zip = Join-Path $tmp 'projeto.zip'
     Invoke-WebRequest "https://github.com/$REPO/archive/refs/heads/main.zip" -OutFile $zip -UseBasicParsing
-    Expand-Archive $zip -DestinationPath $tmp -Force
-    $pasta = Get-ChildItem $tmp -Directory | Select-Object -First 1
-    if (-not $pasta -or -not (Test-Path (Join-Path $pasta.FullName 'ferramentas\instalar.ps1'))) { throw "O download veio incompleto. Tente de novo." }
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [IO.Compression.ZipFile]::ExtractToDirectory($zip, (Join-Path $tmp 'x'))
+    $pasta = Get-ChildItem -LiteralPath (Join-Path $tmp 'x') -Directory | Select-Object -First 1
+    if (-not $pasta -or -not (Test-Path -LiteralPath (Join-Path $pasta.FullName 'ferramentas\instalar.ps1'))) { throw "O download veio incompleto. Tente de novo." }
 
-    New-Item -ItemType Directory -Force $Destino | Out-Null
     # copia por cima: atualiza o programa sem apagar estilos/, projetos/, assets/ nem o venv
     robocopy $pasta.FullName $Destino /E /NFL /NDL /NJH /NJS /NP | Out-Null
     if ($LASTEXITCODE -ge 8) { throw "Não consegui copiar os arquivos pra $Destino (robocopy $LASTEXITCODE)." }
-    Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
     Write-Host " Projeto em: $Destino" -ForegroundColor Green
 
     if ($SoBaixar) { return }
@@ -49,6 +53,8 @@ try {
 } catch {
     Write-Host ""
     Write-Host " Deu erro: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host " (onde: $($_.InvocationInfo.ScriptLineNumber): $($_.InvocationInfo.Line.Trim()))" -ForegroundColor DarkGray
+    if ($tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue }
     Write-Host " Confira a internet e tente de novo. Se continuar, baixe o ZIP na página do projeto:"
     Write-Host " https://github.com/$REPO"
 }

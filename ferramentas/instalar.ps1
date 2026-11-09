@@ -20,8 +20,10 @@ function Winget($id, $nome) {
 function Tem-Python312 {
     if (-not (Tem 'py')) { return $false }
     try {
-        $p = Start-Process py -ArgumentList '-3.12', '-c', 'print(1)' -NoNewWindow -Wait -PassThru `
-            -RedirectStandardOutput "$env:TEMP\edicao_py_out.txt" -RedirectStandardError "$env:TEMP\edicao_py_err.txt"
+        # arquivos de saída na pasta do projeto (a pasta TEMP pode vir com nome curto tipo USURIO~2)
+        $o = Join-Path $PSScriptRoot '.py_out.txt'; $e = Join-Path $PSScriptRoot '.py_err.txt'
+        $p = Start-Process py -ArgumentList '-3.12', '-c', 'print(1)' -NoNewWindow -Wait -PassThru -RedirectStandardOutput $o -RedirectStandardError $e
+        Remove-Item -LiteralPath $o, $e -Force -ErrorAction SilentlyContinue
         return ($p.ExitCode -eq 0)
     } catch { return $false }
 }
