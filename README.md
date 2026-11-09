@@ -6,6 +6,12 @@ Ela não edita de um jeito genérico: **você ensina os seus estilos**. Cada est
 
 > Eu programei as ferramentas e ensinei o editor a usar elas.
 
+<p align="center">
+  <a href="https://github.com/GustavoDiforwil/Editor-de-video-com-IA-GUS/releases/latest/download/Instalar-Editor-IA.bat"><img src="https://img.shields.io/badge/Baixar_o_instalador-Windows-2ea44f?style=for-the-badge&logo=windows&logoColor=white" alt="Baixar o instalador para Windows"></a>
+</p>
+
+<p align="center"><b>1.</b> Baixe o <code>Instalar-Editor-IA.bat</code> &nbsp;·&nbsp; <b>2.</b> Dê dois cliques &nbsp;·&nbsp; <b>3.</b> Escolha Claude, Gemini ou sem IA</p>
+
 ![Frame de um vídeo narrado editado pelo projeto: colagem de papel com a palavra "triste" em letras recortadas, recortes em volta e legenda no topo](docs/img/narrado-colagem.jpg)
 
 *Frame de um vídeo narrado editado do zero pelo projeto: colagem de papel, palavra forte em letras recortadas, peças que tremem tipo stop-motion e legenda que acende a palavra dita. Tudo gerado em Python (`colagem.py` + `render_narrado.py`).*
@@ -59,6 +65,7 @@ A IA não lembra de uma conversa pra outra, então a memória dela são os arqui
 ```text
 edicao-rik/
 ├─ INSTALAR.bat            ← instalador: pergunta Claude, Gemini ou sem IA
+├─ instalador/             ← o instalador de um arquivo só (o que o botão de download baixa)
 ├─ CLAUDE.md               ← regras que valem pra qualquer vídeo (o GEMINI.md importa este)
 ├─ Editor - Geral.bat      ← onde você conversa e ensina estilos novos
 ├─ EDITAR-SEM-IA.bat       ← modo sem IA: arraste o vídeo em cima
@@ -99,9 +106,15 @@ Roda em PC sem placa de vídeo (foi feito num Ryzen 5 3400G): tudo pesado roda e
 
 ## Instalação
 
-1. Baixe o projeto: botão verde **Code → Download ZIP** (ou `git clone`) e extraia numa pasta.
-2. Dê dois cliques em **`INSTALAR.bat`** e escolha **1** (Claude Code), **2** (Gemini CLI) ou **3** (sem IA).
-3. Se escolheu 1 ou 2, no final ele abre a IA numa janela nova: entre com a **sua** conta (ver [Conectar a IA](#conectar-a-ia-a-sua-conta)).
+1. Baixe o **[`Instalar-Editor-IA.bat`](https://github.com/GustavoDiforwil/Editor-de-video-com-IA-GUS/releases/latest/download/Instalar-Editor-IA.bat)** (é um arquivo só, de 1 KB).
+2. Dê dois cliques nele. Ele pergunta a pasta (o padrão é `C:\Users\<você>\Editor-de-video-com-IA`), baixa o projeto e abre o instalador.
+3. Escolha **1** (Claude Code), **2** (Gemini CLI) ou **3** (sem IA). Se escolheu 1 ou 2, no final ele abre a IA numa janela nova: entre com a **sua** conta (ver [Conectar a IA](#conectar-a-ia-a-sua-conta)).
+
+> **Aviso do navegador ou do Windows?** Como é um `.bat` baixado da internet, o navegador pode perguntar se você quer manter o arquivo, e o Windows pode mostrar "O Windows protegeu o computador": clique em **Mais informações → Executar assim mesmo**. O código dele está aqui no repositório: [`instalador/`](instalador/).
+
+**Pra atualizar** depois, é só rodar o `Instalar-Editor-IA.bat` de novo e escolher a mesma pasta: ele troca os arquivos do programa e mantém seus estilos, projetos e assets.
+
+**Prefere sem o `.bat`?** Botão verde **Code → Download ZIP**, extraia numa pasta e dê dois cliques no **`INSTALAR.bat`** que vem dentro.
 
 Pronto: aparece o atalho na sua área de trabalho (**Editor - Geral**, ou **Editor - sem IA** no modo 3).
 
