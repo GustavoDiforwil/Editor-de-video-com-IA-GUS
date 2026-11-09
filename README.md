@@ -1,4 +1,4 @@
-# edicao-rik — um editor de vídeo que aprende o seu estilo
+# edicao— um editor de vídeo que aprende o seu estilo
 
 Um editor de vídeo feito com o [Claude Code](https://claude.com/claude-code): a IA **assiste e ouve a gravação inteira**, monta a história, escreve a lista de edição e **renderiza o vídeo de verdade** com ffmpeg, usando as ferramentas em Python desta pasta.
 
