@@ -1,0 +1,14 @@
+---
+name: estudar-referencia
+description: Estuda um vídeo de referência que o usuário mandar (link do YouTube) — imagem E áudio — e registra as lições no estilo. Use quando ele mandar links "pra você aprender", ex. "/estudar-referencia https://youtu.be/...".
+---
+
+# Estudar referência
+
+1. Baixar e medir: `powershell -File ferramentas/estudar_ref.ps1 -Url <link> -Nome <apelido>` → baixa 480p + legenda, mede cortes (1 corte a cada Xs), gera folhas de frames (início e meio) e `fala.txt`.
+2. **Olhar** todas as folhas geradas e descrever cada técnica visual (zoom, texto, inserts, transições, enquadramentos).
+3. **Ouvir** o áudio: `ferramentas/venv/Scripts/python.exe ferramentas/audio_ref.py <video> INICIO DURACAO saida.txt` (fala com tempo + volume) e cruzar com os frames do mesmo trecho: onde a música corta, onde entram efeitos, onde o silêncio é usado. A ferramenta é fraca para separar música/efeitos de uma mixagem comprimida — diga isso e, se fizer falta, proponha separar com Demucs (pesado; só com OK do usuário).
+4. **Comparar com o que já fazemos**: o que eu já faço igual, o que faço diferente, o que é novo. O usuário quer revisão, não só novidade.
+5. As lições são **padrões** (o mecanismo e por que funciona), não as piadas/montagens dele para copiar; exemplos concretos ficam só no caderno de referências do estilo como ilustração.
+6. **Um caderno por estilo, sem misturar:** registrar em `referencias/<estilo>.md` (link, medição, lições) e as decisões/novidades em `estilos/<estilo>.md`. Ler só o caderno do estilo em questão.
+7. Responder curto: medições, 3–6 lições, como aplicar no próximo vídeo. Não editar nada se estivermos em fase de aprendizado.

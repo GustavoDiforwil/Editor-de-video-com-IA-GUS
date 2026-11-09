@@ -1,0 +1,46 @@
+# Ambiente Python e modelo do Whisper (recriados pelo ferramentas/setup.ps1)
+ferramentas/venv/
+ferramentas/models/
+__pycache__/
+*.pyc
+
+# Cache de volume dos sons (guarda caminhos da máquina de quem rodou)
+ferramentas/niveis.json
+
+# Escolha de IA feita no instalador (cada pessoa tem a sua)
+ferramentas/ia.txt
+
+# Cada vídeo editado: gravações, narração, transcrições, frames, renders
+projetos/
+
+# Vídeos de referência baixados (só as anotações em referencias/*.md vão pro repositório)
+referencias/videos/
+
+# Assets: músicas, sons de meme, imagens e fontes têm direitos de terceiros.
+# Só os LEIA.md (que explicam o que vai em cada pasta) entram no repositório.
+assets/*
+!assets/LEIA.md
+
+# Mídia em geral (segurança extra)
+*.mp4
+*.mkv
+*.mov
+*.webm
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.ass
+*.npz
+*.rgb
+
+# Logs e instaladores
+*.log
+*.err
+*.exe
+*.winmd
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
