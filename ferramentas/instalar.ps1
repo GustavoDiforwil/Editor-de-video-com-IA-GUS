@@ -7,14 +7,14 @@ Set-Location $Raiz
 function Titulo($t) { Write-Host ""; Write-Host " $t" -ForegroundColor Cyan }
 function Ok($t)     { Write-Host "   ok  $t" -ForegroundColor Green }
 function Aviso($t)  { Write-Host "   !   $t" -ForegroundColor Yellow }
-function Tem($cmd)  { [bool](Get-Command $cmd -ErrorAction SilentlyContinue) }
+function Tem($cmd)  { [bool](Get-Command $cmd -CommandType Application -ErrorAction SilentlyContinue) }  # só programas de verdade, nunca funções deste script
 function Atualiza-Path {
     $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
     foreach ($p in "$env:USERPROFILE\.local\bin", "$env:APPDATA\npm") { if ((Test-Path $p) -and ($env:Path -notlike "*$p*")) { $env:Path += ";$p" } }
 }
-function Winget($id, $nome) {
+function Instala-Pacote($id, $nome) {  # NÃO chamar de "Winget": o PowerShell ignora maiúsculas e a função chamaria ela mesma pra sempre
     Write-Host "   ... instalando $nome (pode pedir permissão do Windows)"
-    winget install --id $id -e --silent --accept-source-agreements --accept-package-agreements | Out-Host
+    winget.exe install --id $id -e --silent --accept-source-agreements --accept-package-agreements | Out-Host
     Atualiza-Path
 }
 function Tem-Python312 {
@@ -58,8 +58,8 @@ try {
     Ok "winget"
 
     Titulo "[2/7] Python 3.12 e ffmpeg"
-    if (Tem-Python312) { Ok "Python 3.12 (já tinha)" } else { Winget 'Python.Python.3.12' 'Python 3.12'; if (Tem-Python312) { Ok "Python 3.12" } else { throw "Python 3.12 não ficou disponível. Feche esta janela e rode o INSTALAR.bat de novo." } }
-    if (Tem 'ffmpeg') { Ok "ffmpeg (já tinha)" } else { Winget 'Gyan.FFmpeg' 'ffmpeg'; if (Tem 'ffmpeg') { Ok "ffmpeg" } else { Aviso "ffmpeg instalado, mas só aparece numa janela nova. Se der erro depois, reinicie o PC." } }
+    if (Tem-Python312) { Ok "Python 3.12 (já tinha)" } else { Instala-Pacote 'Python.Python.3.12' 'Python 3.12'; if (Tem-Python312) { Ok "Python 3.12" } else { throw "Python 3.12 não ficou disponível. Feche esta janela e rode o INSTALAR.bat de novo." } }
+    if (Tem 'ffmpeg') { Ok "ffmpeg (já tinha)" } else { Instala-Pacote 'Gyan.FFmpeg' 'ffmpeg'; if (Tem 'ffmpeg') { Ok "ffmpeg" } else { Aviso "ffmpeg instalado, mas só aparece numa janela nova. Se der erro depois, reinicie o PC." } }
 
     Titulo "[3/7] Ambiente Python e dependências"
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'setup.ps1') | Out-Host
@@ -95,7 +95,7 @@ try {
         }
     } elseif ($ia -eq 'gemini') {
         if (Tem 'gemini') { Ok "Gemini CLI (já tinha)" } else {
-            if (-not (Tem 'npm')) { Winget 'OpenJS.NodeJS.LTS' 'Node.js' }
+            if (-not (Tem 'npm')) { Instala-Pacote 'OpenJS.NodeJS.LTS' 'Node.js' }
             if (-not (Tem 'npm')) { throw "O Node.js não ficou disponível. Feche esta janela e rode o INSTALAR.bat de novo." }
             Write-Host "   ... instalando o Gemini CLI"
             & npm install -g '@google/gemini-cli' | Out-Host
